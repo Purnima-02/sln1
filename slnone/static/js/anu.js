@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     document.addEventListener('DOMContentLoaded', function() {
-        var fields = document.querySelectorAll('id_business_name, id_co_applicant_first_name, id_co_applicant_last_name, id_co_applicant_relationship, id_co_applicant_occupation');
+        var fields = document.getElementById('id_business_name')
         
         // Iterate over each field and attach the input event listener
         fields.forEach(function(field) {
@@ -103,6 +103,36 @@ document.addEventListener('DOMContentLoaded', function() {
             this.value = value.replace(/[^A-Z0-9]{{10}/g, '');  // Remove non-alphabetic characters
         });
     });
-    
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var firstNameField = document.getElementById('id_co_applicant_first_name');
+        firstNameField.addEventListener('input', function() {
+            var value = this.value;
+            if (value) {
+                value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+            }
+            this.value = value;
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        var firstNameField = document.getElementById('id_co_applicant_last_name');
+        firstNameField.addEventListener('input', function() {
+            var value = this.value;
+            if (value) {
+                value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+            }
+            this.value = value;
+        });
+    });
  
+    document.addEventListener('DOMContentLoaded', function() {
+        var firstNameField = document.getElementById('id_co_applicant_occupation');
+        firstNameField.addEventListener('input', function() {
+            var value = this.value;
+            if (value) {
+                value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+            }
+            this.value = value;
+        });
+    });
   

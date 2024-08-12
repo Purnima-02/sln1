@@ -314,7 +314,7 @@ def lap_verification_add(request, instance_id):
     
     return render(request, 'customer/lapappliverify.html', {
         'form': form,
-        'is_update': applicant_documents.exists(),  # Pass a flag to indicate update or add
+          # Pass a flag to indicate update or add
     })
 def update_lapverify(request, instance_id):
     loan = get_object_or_404(LoanApplication, id=instance_id)
@@ -332,7 +332,7 @@ def update_lapverify(request, instance_id):
     else:
         form = lapApplicationVerifyForm(instance=applicant_document)
 
-    return render(request, 'customer/lapappliverify.html', {
+    return render(request, 'customer/updateverify.html', {
         'form': form,
         
     })

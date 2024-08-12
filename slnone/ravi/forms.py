@@ -214,7 +214,7 @@ class CustomerProfileForm(forms.ModelForm):
             'ref2_first_name': forms.TextInput(attrs={'class': 'form-control','placeholder': 'First Name'}),
             'coapplicant_first_name': forms.TextInput(attrs={'class': 'form-control','placeholder': 'First Name'}),
             'coapplicant_last_name': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Last Name'}),
-            'coapplicant_age': forms.DateInput(attrs={'class': 'form-control','placeholder': 'Age','type':'date'}),
+            'coapplicant_age': forms. NumberInput(attrs={'class': 'form-control','placeholder': 'Age'}),
             'coapplicant_gender': forms.Select(attrs={'class': 'form-control','class': 'form-control'}),
             'coapplicant_mobile_number': forms.TextInput(attrs={'class': 'form-control','placeholder': '1234567890'}),
             'coapplicant_email_id': forms.EmailInput(attrs={'class': 'form-control','placeholder': 'example@example.com'}),
@@ -223,8 +223,8 @@ class CustomerProfileForm(forms.ModelForm):
             'coapplicant_occupation': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Occupation'}),
         }
 
-    def _init_(self, *args, **kwargs):
-        super()._init_(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         # Optionally, you can customize widget attributes here
         for field_name, field in self.fields.items():
             if isinstance(field.widget, forms.TextInput):
