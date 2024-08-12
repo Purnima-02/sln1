@@ -71,15 +71,13 @@ def validate_gst_number(value):
 
 
 from datetime import date
-def validate_age(date_of_birth):
-    if not isinstance(date_of_birth, date):
-        raise ValidationError('Invalid date format.')
-    
-    today = date.today()
-    age = today.year - date_of_birth.year - ((today.month, today.day) < (date_of_birth.month, date_of_birth.day))
-    
+def validate_age(value):
+    try:
+        age = int(value)
+    except (ValueError, TypeError):
+        raise ValidationError('Age must be a number.')
     if not (18 <= age <= 70):
-        raise ValidationError('Age must be between 18 and 70 years.')
+        raise ValidationError('Age must be between 18 and 70.')
 def validate_address(value):
     if not re.search(r'[A-Za-z0-9]', value):
         raise ValidationError('Address must contain letters and digits.')
@@ -301,7 +299,7 @@ class CustomerProfile(models.Model):
     pan_card_number = models.CharField(max_length=10, validators=[validate_pan])
     aadhar_card_number = models.CharField(max_length=12, validators=[validate_aadhar_number])
     marital_status = models.CharField(max_length=10, choices=MARITAL_STATUS_CHOICES)
-    email_id = models.EmailField(validators=[validate_email])
+    email_id = models.EmailField(validators=[EmailValidator()])
     current_address = models.TextField()
     current_address_pincode = models.CharField(max_length=6, validators=[validate_pincode])
     aadhar_address = models.TextField()
@@ -322,34 +320,34 @@ class CustomerProfile(models.Model):
     business_name = models.CharField(max_length=100, blank=True, null=True, validators=[validate_only_letters])
     business_type = models.CharField(max_length=50, choices=BUSINESS_TYPE_CHOICES, blank=True, null=True)
     business_establishment_date = models.DateField(blank=True, null=True)
-    gst_certificate = models.BooleanField(default=False)
+   
     gst_number = models.CharField(max_length=15, blank=True, null=True , validators=[validate_gst_number])
     mother_name = models.CharField(max_length=100,validators=[validate_only_letters])
     father_name = models.CharField(max_length=100, validators=[validate_only_letters])
     nature_of_business = models.CharField(max_length=100, blank=True, null=True)
     turnover_per_year = models.CharField(max_length=10, blank=True, null=True, validators=[validate_amount])
     business_address_pincode = models.CharField(max_length=6, blank=True, null=True, validators=[validate_pincode])
-    house_plot_purchase_value = models.CharField(max_length=10, blank=True, null=True, validators=[validate_amount])
-    required_loan_amount = models.CharField(max_length=10, blank=True, null=True, validators=[validate_amount])
-    existing_loan = models.BooleanField(default=False)
+    house_plot_purchase_value = models.CharField(max_length=10,default='', blank=False, null=False, validators=[validate_amount])
+    required_loan_amount = models.CharField(max_length=10,default='', blank=False, null=False, validators=[validate_amount])
+   
     existing_loan_bank_nbfc_name = models.CharField(max_length=100, blank=True, null=True)
     existing_loan_amount = models.CharField(max_length=10, blank=True, null=True, validators=[validate_amount])
-    ref1_person_name = models.CharField(max_length=200, blank=True, null=True, validators=[validate_only_letters])
-    ref2_person_name = models.CharField(max_length=200, blank=True, null=True, validators=[validate_only_letters])
-    ref1_mobile_number = models.CharField(max_length=10, blank=True, null=True, validators=[validate_mobile_number])
-    ref2_mobile_number = models.CharField(max_length=200, blank=True, null=True ,validators=[validate_mobile_number])
+    ref1_person_name = models.CharField(max_length=200,default='', blank=False, null=False, validators=[validate_only_letters])
+    ref2_person_name = models.CharField(max_length=200,default='', blank=False, null=False, validators=[validate_only_letters])
+    ref1_mobile_number = models.CharField(max_length=10,default='', blank=False, null=False, validators=[validate_mobile_number])
+    ref2_mobile_number = models.CharField(max_length=200,default='', blank=False, null=False ,validators=[validate_mobile_number])
 
     # Co-Applicant Details
     coapplicant_first_name = models.CharField(max_length=100, default='', validators=[validate_only_letters])
     coapplicant_last_name = models.CharField(max_length=100, default='', validators=[validate_only_letters])
     coapplicant_gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='Other')
-    coapplicant_age = models.DateField(default='', validators=[validate_age])
+    coapplicant_age = models.IntegerField(validators=[validate_age])
     coapplicant_relationship = models.CharField(max_length=50, default='')
     coapplicant_mobile_number = models.CharField(max_length=10, default='', validators=[validate_mobile_number])
     coapplicant_email_id = models.EmailField(validators=[validate_email])
     coapplicant_occupation = models.CharField(max_length=100, default='', validators=[validate_only_letters])
     coapplicant_net_income_per_month = models.CharField(max_length=10, default='', validators=[validate_amount])
-    random_number = models.CharField(max_length=10, blank=True, null=True)
+    random_number = models.CharField(max_length=10, blank=True,null=True)
 
     
     def save(self, *args, **kwargs):
